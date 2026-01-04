@@ -1,10 +1,12 @@
 import os
+import sys
 import shutil
 from copystatic import copy_files_recursive
 from gencontent import generate_page
 
+basepath = sys.argv[1] if len(sys.argv) > 1 else "/"
 static = "./static"
-public = "./public"
+public = "./docs"
 content = "./content"
 template = "./template.html"
 
@@ -22,7 +24,7 @@ def main():
             if file.endswith(".md"):
                 from_path = os.path.join(root, file)
                 dest_path = os.path.join(public, os.path.relpath(root, content), file[:-3] + ".html")
-                generate_page(from_path, template, dest_path)
+                generate_page(from_path, template, dest_path, basepath)
 
 if __name__ == "__main__":
     main()

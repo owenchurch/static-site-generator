@@ -7,7 +7,7 @@ def extract_title(markdown: str) -> str:
             return line[1:].strip()
     raise ValueError("no title found")
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, basepath):
     print(f"generating page from {from_path} to {dest_path} using {template_path}")
 
     with open(from_path, "r") as f:
@@ -20,6 +20,9 @@ def generate_page(from_path, template_path, dest_path):
         template = f.read()
 
     page_content = template.replace("{{ Title }}", title).replace("{{ Content }}", html)
+
+    page_content = page_content.replace('href="/', f'href="{basepath}')
+    page_content = page_content.replace('src="/', f'src="{basepath}')
 
     dirpath = os.path.dirname(dest_path)
     if dirpath != "":
